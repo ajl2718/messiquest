@@ -1003,8 +1003,8 @@ class Cat {
             this.vy = -10; this.mode = 'return'; this.attackCD = 50;
             spawnParticles(this.x + this.w/2, this.y, 22,
               ['#8090A0','#B0C0CC','#fff','#AAB8C4']);
-            addText(e.x + e.w/2, e.y - 20, 'POUNCE! +100', '#B0C0CC');
-            return 100;
+            addText(e.x + e.w/2, e.y - 20, 'POUNCE! +150', '#B0C0CC');
+            return 150;
           }
           break;
         }
@@ -2109,8 +2109,14 @@ function updateCollectibles() {
       c.collected = true;
       player.invincible = Math.max(player.invincible, 200);
       score += 50;
+      mateCount++;
       sfxMate();
-      addText(c.x + c.w/2, c.y - 10, '🧉 ¡MATE! +50', '#78D430');
+      if (mateCount % 10 === 0) {
+        player.lives++;
+        addText(c.x + c.w/2, c.y - 10, '🧉 ¡MATE! +50  +1 LIFE! 🧉', '#78D430');
+      } else {
+        addText(c.x + c.w/2, c.y - 10, '🧉 ¡MATE! +50', '#78D430');
+      }
       spawnParticles(c.x + c.w/2, c.y, 18, ['#78D430','#AADDAA','#FFD700','#fff']);
     }
   }
@@ -2159,6 +2165,7 @@ let player    = null;
 let ball      = null;
 let cat       = null;
 let goalScored = false;
+let mateCount = 0;
 let levelTransitioning = false;
 const cam = { x: 0 };
 let frameCount = 0;
@@ -2202,8 +2209,9 @@ function _initCat() {
 }
 
 function startGame() {
-  score    = 0;
-  levelIdx = 0;
+  score     = 0;
+  levelIdx  = 0;
+  mateCount = 0;
   player   = null;
   loadLevel(0);
   player.lives = 3;
