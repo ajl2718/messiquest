@@ -2111,7 +2111,7 @@ function updateCollectibles() {
       score += 50;
       mateCount++;
       sfxMate();
-      if (mateCount % 10 === 0) {
+      if (mateCount % 5 === 0) {
         player.lives++;
         addText(c.x + c.w/2, c.y - 10, '🧉 ¡MATE! +50  +1 LIFE! 🧉', '#78D430');
       } else {
