@@ -16,3 +16,9 @@ You can collect mate (a favourite beverage among Argentinians) along the way. Af
 
 - Kill a baddy with the cat = 150
 - Kill a baddy with the soccer ball = 100 points
+
+## How to play
+
+Simply got [MessiQuest](https://ajl2718.github.io/messiquest/). 
+
+Alternatively, you can download the html file and run locally.
