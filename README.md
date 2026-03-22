@@ -1,6 +1,6 @@
 # Messi Quest 2D platform game
 
-[MessiQuest](https://ajl2718.github.io/messiquest/). 
+[MessiQuest](https://ajl2718.github.io/messiquest/)
 
 A game I created for my nephew that involves his two favour things: Lionel Messi and a cat
 
