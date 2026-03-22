@@ -1,6 +1,6 @@
 # Messi Quest 2D platform game
 
-A game I created for my newphew that involves his two favour things: Lionel Messi and a cat
+A game I created for my nephew that involves his two favour things: Lionel Messi and a cat
 
 ## Gameplay
 The main character is messy who can kill baddies by either kicking them with a soccer ball or by throwing a cat at them. The cat is Messi's constant companion, and the ball always returns (well, except for the occasional bug where it gets stuck and never returns). 
