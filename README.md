@@ -1,5 +1,7 @@
 # Messi Quest 2D platform game
 
+[MessiQuest](https://ajl2718.github.io/messiquest/). 
+
 A game I created for my nephew that involves his two favour things: Lionel Messi and a cat
 
 ![Messi Quest screenshot](gameplay_screenshot.png)
@@ -19,6 +21,4 @@ You can collect mate (a favourite beverage among Argentinians) along the way. Af
 
 ## How to play
 
-Simply got [MessiQuest](https://ajl2718.github.io/messiquest/). 
-
-Alternatively, you can download the html file and run locally.
+Simply visit [MessiQuest](https://ajl2718.github.io/messiquest/), or alternatively, you can download the html file and run locally.
