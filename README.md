@@ -9,6 +9,10 @@ The main character is Messi, who can kill baddies by either kicking them with a 
 
 There are three levels and a boss at the end of each one. 
 
-## Mate
+## 🧉 Mate
 You can collect mate (a favourite beverage among Argentinians) along the way. After five mates you acquire another life. 
 
+## Points
+
+- Kill a baddy with the cat = 150
+- Kill a baddy with the soccer ball = 100 points
