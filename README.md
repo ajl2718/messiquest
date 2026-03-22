@@ -2,7 +2,7 @@
 
 [MessiQuest](https://ajl2718.github.io/messiquest/)
 
-A game I created for my nephew that involves his two favour things: Lionel Messi and a cat
+A game I created for my nephew that involves his two favourite things: Lionel Messi and a cat
 
 ![Messi Quest screenshot](gameplay_screenshot.png)
 
