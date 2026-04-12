@@ -91,7 +91,9 @@ const SPEED      = 5.5;
 // ─── Level Definitions ────────────────────────────────────────────────────────
 // Enemy types: 'grunt' slow red, 'speeder' fast blue, 'jumper' green bouncy, 'boss' big multi-hit
 const LEVELS = [
-  // ─ LEVEL 1: La Boca Canyons ─────────────────────────────────────────────────
+  // ─ LEVEL 1: La Boca Canyons ──────────────────────────────────────────────────
+  // Layout: staircase waves — platforms ascend in a clear up-up-up-down rhythm.
+  // Mostly single platforms, easy to read. Two moderate ground gaps.
   {
     name: 'LA BOCA CANYONS',
     bgTheme: 'caminito',
@@ -99,200 +101,246 @@ const LEVELS = [
     goalX: 3960,
     spawnX: 80, spawnY: 545,
     platforms: [
-      // Ground — split with two canyon gaps (920-1060, 2290-2480)
-      { x: -300, y: 640, w: 1220, h: 120 },   // ground A: -300 → 920
-      { x: 1060, y: 640, w: 1230, h: 120 },   // ground B: 1060 → 2290
-      { x: 2480, y: 640, w: 2020, h: 120 },   // ground C: 2480 → end (boss safe)
-      // Canyon 1 stepping stone (gap 920-1060)
-      { x:  958, y: 572, w:  58, h: 18 },
-      // Canyon 2 stepping stones (gap 2290-2480, two offset stones)
-      { x: 2310, y: 562, w:  52, h: 18 },
-      { x: 2404, y: 546, w:  52, h: 18 },
-      // Elevated platforms
-      { x:  160, y: 500, w: 150, h: 18 },
-      { x:  390, y: 420, w: 160, h: 18 },
-      { x:  640, y: 330, w: 180, h: 18 },
-      { x:  870, y: 450, w: 150, h: 18 },
-      { x: 1110, y: 350, w: 160, h: 18 },
-      { x: 1360, y: 250, w: 180, h: 18 },
-      { x: 1600, y: 410, w: 150, h: 18 },
-      { x: 1840, y: 320, w: 160, h: 18 },
-      { x: 2090, y: 220, w: 180, h: 18 },
-      { x: 2340, y: 390, w: 130, h: 18 },
-      { x: 2580, y: 280, w: 180, h: 18 },
-      { x: 2820, y: 450, w: 150, h: 18 },
-      { x: 3060, y: 340, w: 160, h: 18 },
-      { x: 3300, y: 500, w: 200, h: 18 },
+      // Ground — two gaps (880-1120, 2420-2640)
+      { x: -300, y: 640, w: 1180, h: 120 },  // A: -300 → 880
+      { x: 1120, y: 640, w: 1300, h: 120 },  // B: 1120 → 2420
+      { x: 2640, y: 640, w: 1860, h: 120 },  // C: 2640 → end
+      // Gap 1 crossing (880-1120): two easy stepping stones
+      { x:  900, y: 572, w:  72, h: 18 },
+      { x: 1032, y: 558, w:  68, h: 18 },
+      // Gap 2 crossing (2420-2640): two offset stones
+      { x: 2438, y: 568, w:  62, h: 18 },
+      { x: 2548, y: 552, w:  62, h: 18 },
+      // ── Wave 1: gentle ascent ──────────────────────────────────────────
+      { x:  150, y: 520, w: 160, h: 18 },  // near ground
+      { x:  360, y: 440, w: 145, h: 18 },
+      { x:  555, y: 355, w: 165, h: 18 },
+      { x:  770, y: 460, w: 140, h: 18 },  // dip before gap
+      // ── Wave 2: tall peak ─────────────────────────────────────────────
+      { x: 1140, y: 370, w: 155, h: 18 },
+      { x: 1350, y: 260, w: 175, h: 18 },  // peak
+      { x: 1570, y: 380, w: 150, h: 18 },
+      { x: 1770, y: 490, w: 140, h: 18 },  // descent back down
+      // ── Wide plateau ──────────────────────────────────────────────────
+      { x: 1960, y: 220, w: 280, h: 18 },  // long flat peak, hard to miss
+      { x: 2280, y: 430, w: 120, h: 18 },  // narrow drop before gap 2
+      // ── Wave 3: descent to boss ───────────────────────────────────────
+      { x: 2660, y: 315, w: 175, h: 18 },
+      { x: 2870, y: 440, w: 150, h: 18 },
+      { x: 3080, y: 330, w: 165, h: 18 },
+      { x: 3300, y: 500, w: 230, h: 18 },  // wide ledge near boss
     ],
     enemies: [
-      // Ground enemies — kept clear of canyon gaps
-      { x:  380, y: 585, patrol: 80,  type: 'grunt'   },  // A: 300-460
-      { x:  700, y: 585, patrol: 85,  type: 'speeder' },  // A: 615-785, clear of gap at 920
-      { x: 1130, y: 585, patrol: 65,  type: 'grunt'   },  // B: 1065-1195, just past gap
-      { x: 1420, y: 585, patrol: 120, type: 'speeder' },  // B: 1300-1540
-      { x: 1750, y: 585, patrol: 80,  type: 'grunt'   },  // B: 1670-1830
-      { x: 2110, y: 585, patrol: 100, type: 'grunt'   },  // B: 2010-2210, clear of gap at 2290
-      { x: 2570, y: 585, patrol: 80,  type: 'speeder' },  // C: 2490-2650, just past gap
-      { x: 2870, y: 585, patrol: 80,  type: 'grunt'   },  // C: 2790-2950
-      // Platform enemies
-      { x:  180, y: 445, patrol: 50,  type: 'jumper'  },
-      { x:  660, y: 275, patrol: 65,  type: 'grunt'   },
-      { x: 1380, y: 195, patrol: 70,  type: 'jumper'  },
-      { x: 1860, y: 265, patrol: 60,  type: 'grunt'   },
-      { x: 2110, y: 165, patrol: 65,  type: 'jumper'  },
-      { x: 2600, y: 225, patrol: 60,  type: 'grunt'   },
+      // Ground enemies — clear of both gaps
+      { x:  390, y: 585, patrol:  80, type: 'grunt'   },
+      { x:  680, y: 585, patrol:  80, type: 'speeder' },  // clear of 880
+      { x: 1200, y: 585, patrol:  70, type: 'grunt'   },
+      { x: 1470, y: 585, patrol: 110, type: 'speeder' },
+      { x: 1790, y: 585, patrol:  80, type: 'grunt'   },
+      { x: 2070, y: 585, patrol: 100, type: 'grunt'   },  // clear of 2420
+      { x: 2730, y: 585, patrol:  80, type: 'speeder' },
+      { x: 2970, y: 585, patrol:  80, type: 'grunt'   },
+      // Platform enemies (y = platform.y - enemy.h)
+      { x:  170, y: 465, patrol:  50, type: 'jumper'  },  // on y=520
+      { x:  575, y: 300, patrol:  65, type: 'grunt'   },  // on y=355
+      { x: 1370, y: 205, patrol:  65, type: 'jumper'  },  // on y=260
+      { x: 2000, y: 165, patrol: 100, type: 'grunt'   },  // wide plateau
+      { x: 2680, y: 260, patrol:  65, type: 'jumper'  },  // on y=315
       // Boss
-      { x: 3340, y: 578, patrol: 95,  type: 'boss', hp: 6 },
+      { x: 3320, y: 578, patrol:  90, type: 'boss', hp: 6 },
     ],
   },
-  // ─ LEVEL 2: Bombonera Ravines ───────────────────────────────────────────────
+
+  // ─ LEVEL 2: Bombonera Ravines ────────────────────────────────────────────────
+  // Layout: stadium terraces — platforms appear in CLUSTERS of 2-3 at the same height
+  // (like bleacher rows), with wide drops between tiers. Platforms are wider.
+  // Four ground gaps; staircase-within-clusters, big empty space between clusters.
   {
     name: 'BOMBONERA RAVINES',
     bgTheme: 'bombonera',
-    worldW: 4800,
-    goalX: 4560,
+    rain: true,
+    worldW: 5200,
+    goalX: 5000,
     spawnX: 80, spawnY: 545,
     platforms: [
-      // Ground — three canyon gaps (1000-1180, 2630-2840, 3950-4130)
-      { x: -300, y: 640, w: 1300, h: 120 },   // ground A: -300 → 1000
-      { x: 1180, y: 640, w: 1450, h: 120 },   // ground B: 1180 → 2630
-      { x: 2840, y: 640, w: 1110, h: 120 },   // ground C: 2840 → 3950
-      { x: 4130, y: 640, w:  970, h: 120 },   // ground D: 4130 → end (boss safe)
-      // Canyon 1 stepping stone (gap 1000-1180)
-      { x: 1042, y: 570, w:  58, h: 18 },
-      // Canyon 2 stepping stones (gap 2630-2840, two stones)
-      { x: 2655, y: 560, w:  52, h: 18 },
-      { x: 2760, y: 544, w:  52, h: 18 },
-      // Canyon 3 stepping stone (gap 3950-4130)
-      { x: 3992, y: 570, w:  58, h: 18 },
-      // Elevated platforms
-      { x:  180, y: 480, w: 150, h: 18 },
-      { x:  420, y: 370, w: 160, h: 18 },
-      { x:  680, y: 280, w: 180, h: 18 },
-      { x:  950, y: 430, w: 150, h: 18 },
-      { x: 1200, y: 330, w: 160, h: 18 },
-      { x: 1460, y: 220, w: 180, h: 18 },
-      { x: 1720, y: 390, w: 150, h: 18 },
-      { x: 1970, y: 280, w: 160, h: 18 },
-      { x: 2230, y: 180, w: 180, h: 18 },
-      { x: 2490, y: 360, w: 150, h: 18 },
-      { x: 2750, y: 250, w: 160, h: 18 },
-      { x: 3010, y: 420, w: 150, h: 18 },
-      { x: 3270, y: 310, w: 160, h: 18 },
-      { x: 3540, y: 200, w: 180, h: 18 },
-      { x: 3800, y: 380, w: 150, h: 18 },
-      { x: 4060, y: 270, w: 160, h: 18 },
-      { x: 4310, y: 490, w: 200, h: 18 },
+      // Ground — four gaps (780-1220, 2240-2620, 3520-3920, 4520-4680)
+      { x: -300, y: 640, w: 1080, h: 120 },  // A: -300 → 780
+      { x: 1220, y: 640, w: 1020, h: 120 },  // B: 1220 → 2240
+      { x: 2620, y: 640, w:  900, h: 120 },  // C: 2620 → 3520
+      { x: 3920, y: 640, w:  600, h: 120 },  // D: 3920 → 4520
+      { x: 4680, y: 640, w:  520, h: 120 },  // E: 4680 → end (boss zone)
+      // Gap 1 crossing (780-1220, 440px): three stones
+      { x:  798, y: 562, w:  58, h: 18 },
+      { x:  930, y: 548, w:  58, h: 18 },
+      { x: 1070, y: 564, w:  58, h: 18 },
+      // Gap 2 crossing (2240-2620, 380px): two stones
+      { x: 2258, y: 564, w:  62, h: 18 },
+      { x: 2412, y: 550, w:  62, h: 18 },
+      // Gap 3 crossing (3520-3920, 400px): three stones
+      { x: 3538, y: 560, w:  56, h: 18 },
+      { x: 3678, y: 546, w:  56, h: 18 },
+      { x: 3810, y: 562, w:  56, h: 18 },
+      // Gap 4 crossing (4520-4680, 160px): one stone
+      { x: 4536, y: 570, w:  66, h: 18 },
+      // ── Terrace A-LOW: two wide platforms at y=490 ────────────────────
+      { x:  140, y: 490, w: 225, h: 18 },
+      { x:  410, y: 490, w: 215, h: 18 },
+      // ── Terrace A-MID: two platforms at y=345 ────────────────────────
+      { x:  220, y: 345, w: 205, h: 18 },
+      { x:  480, y: 345, w: 195, h: 18 },
+      // ── Terrace A-HIGH: one wide platform at y=205 ───────────────────
+      { x:  350, y: 205, w: 255, h: 18 },
+      // ── Terrace B-LOW: y=465 ─────────────────────────────────────────
+      { x: 1240, y: 465, w: 220, h: 18 },
+      { x: 1510, y: 465, w: 200, h: 18 },
+      // ── Terrace B-MID: y=315 ─────────────────────────────────────────
+      { x: 1360, y: 315, w: 215, h: 18 },
+      { x: 1640, y: 310, w: 205, h: 18 },
+      // ── Terrace B-HIGH: y=170 ────────────────────────────────────────
+      { x: 1490, y: 170, w: 280, h: 18 },
+      // ── Terrace C-LOW: y=480 ─────────────────────────────────────────
+      { x: 2640, y: 480, w: 220, h: 18 },
+      { x: 2910, y: 480, w: 205, h: 18 },
+      // ── Terrace C-MID: y=330 ─────────────────────────────────────────
+      { x: 2755, y: 330, w: 215, h: 18 },
+      { x: 3030, y: 325, w: 200, h: 18 },
+      // ── Terrace C-HIGH: y=185 ────────────────────────────────────────
+      { x: 2880, y: 185, w: 265, h: 18 },
+      // ── Terrace D-LOW: y=475 ─────────────────────────────────────────
+      { x: 3940, y: 475, w: 215, h: 18 },
+      { x: 4210, y: 470, w: 200, h: 18 },
+      // ── Terrace D-MID: y=325 ─────────────────────────────────────────
+      { x: 4060, y: 325, w: 220, h: 18 },
+      { x: 4330, y: 320, w: 195, h: 18 },
+      // ── Boss approach ledge ───────────────────────────────────────────
+      { x: 4700, y: 510, w: 210, h: 18 },
     ],
     enemies: [
-      // Ground enemies — clear of all gaps
-      { x:  300, y: 585, patrol: 110, type: 'speeder' },  // A: 190-410
-      { x:  620, y: 585, patrol: 110, type: 'speeder' },  // A: 510-730
-      { x:  870, y: 585, patrol: 75,  type: 'grunt'   },  // A: 795-945, clear of gap 1000
-      { x: 1260, y: 585, patrol: 75,  type: 'grunt'   },  // B: 1185-1335, just past gap
-      { x: 1550, y: 585, patrol: 80,  type: 'speeder' },  // B
-      { x: 1850, y: 585, patrol: 120, type: 'speeder' },  // B
-      { x: 2150, y: 585, patrol: 80,  type: 'grunt'   },  // B
-      { x: 2440, y: 585, patrol: 120, type: 'speeder' },  // B: 2320-2560, clear of gap 2630
-      { x: 2920, y: 585, patrol: 75,  type: 'grunt'   },  // C: 2845-2995, just past gap
-      { x: 3160, y: 585, patrol: 120, type: 'speeder' },  // C
-      { x: 3450, y: 585, patrol: 80,  type: 'grunt'   },  // C
-      { x: 3720, y: 585, patrol: 100, type: 'speeder' },  // C: 3620-3820, clear of gap 3950
-      { x: 4215, y: 585, patrol: 75,  type: 'grunt'   },  // D: 4140-4290, just past gap
-      // Platform jumpers
-      { x:  200, y: 425, patrol: 55,  type: 'jumper'  },
-      { x:  700, y: 225, patrol: 65,  type: 'jumper'  },
-      { x: 1480, y: 165, patrol: 70,  type: 'jumper'  },
-      { x: 1990, y: 225, patrol: 65,  type: 'jumper'  },
-      { x: 2770, y: 195, patrol: 65,  type: 'jumper'  },
-      { x: 3290, y: 255, patrol: 65,  type: 'jumper'  },
-      { x: 3560, y: 145, patrol: 70,  type: 'jumper'  },
-      { x: 4080, y: 215, patrol: 65,  type: 'jumper'  },
+      // Ground enemies — clear of all four gaps
+      { x:  310, y: 585, patrol: 100, type: 'speeder' },
+      { x:  620, y: 585, patrol:  90, type: 'speeder' },  // A, clear of 780
+      { x: 1300, y: 585, patrol:  75, type: 'grunt'   },
+      { x: 1560, y: 585, patrol:  90, type: 'speeder' },
+      { x: 1880, y: 585, patrol: 120, type: 'speeder' },
+      { x: 2100, y: 585, patrol:  80, type: 'grunt'   },  // clear of 2240
+      { x: 2700, y: 585, patrol:  80, type: 'grunt'   },
+      { x: 2980, y: 585, patrol: 110, type: 'speeder' },
+      { x: 3200, y: 585, patrol:  80, type: 'grunt'   },  // clear of 3520
+      { x: 3980, y: 585, patrol:  75, type: 'grunt'   },
+      { x: 4250, y: 585, patrol: 110, type: 'speeder' },  // clear of 4520
+      // Platform enemies — on terrace LOW and MID shelves
+      { x:  160, y: 435, patrol:  80, type: 'jumper'  },  // Tier A-LOW (y=490)
+      { x:  430, y: 290, patrol:  75, type: 'grunt'   },  // Tier A-MID (y=345)
+      { x:  370, y: 150, patrol:  90, type: 'jumper'  },  // Tier A-HIGH (y=205)
+      { x: 1260, y: 410, patrol:  80, type: 'jumper'  },  // Tier B-LOW
+      { x: 1660, y: 255, patrol:  75, type: 'grunt'   },  // Tier B-MID
+      { x: 1510, y: 115, patrol:  95, type: 'jumper'  },  // Tier B-HIGH
+      { x: 2660, y: 425, patrol:  80, type: 'jumper'  },  // Tier C-LOW
+      { x: 2770, y: 275, patrol:  80, type: 'grunt'   },  // Tier C-MID
+      { x: 3060, y: 270, patrol:  80, type: 'speeder' },
+      { x: 3960, y: 420, patrol:  80, type: 'jumper'  },  // Tier D-LOW
+      { x: 4080, y: 270, patrol:  80, type: 'grunt'   },  // Tier D-MID
       // Stun-boss
-      { x: 4340, y: 568, patrol: 105, type: 'stun-boss', hp: 9 },
+      { x: 4780, y: 568, patrol:  80, type: 'stun-boss', hp: 5 },
     ],
   },
-  // ─ LEVEL 3: Obelisco Chasms ─────────────────────────────────────────────────
+
+  // ─ LEVEL 3: Obelisco Chasms ──────────────────────────────────────────────────
+  // Layout: Buenos Aires rooftop run — paired lower/upper "building floor" platforms
+  // create silhouettes of tall buildings. Ground sections are narrow; most traversal
+  // happens high up. Wide platforms, extreme height variation. Four wide chasms.
   {
     name: 'OBELISCO CHASMS',
     bgTheme: 'obelisco',
     worldW: 5600,
-    goalX: 5360,
+    goalX: 5340,
     spawnX: 80, spawnY: 545,
     platforms: [
-      // Ground — four chasms (910-1080, 2360-2560, 3790-3980, 5060-5230)
-      { x: -300, y: 640, w: 1210, h: 120 },   // ground A: -300 → 910
-      { x: 1080, y: 640, w: 1280, h: 120 },   // ground B: 1080 → 2360
-      { x: 2560, y: 640, w: 1230, h: 120 },   // ground C: 2560 → 3790
-      { x: 3980, y: 640, w: 1080, h: 120 },   // ground D: 3980 → 5060
-      { x: 5230, y: 640, w:  670, h: 120 },   // ground E: 5230 → end (boss safe)
-      // Chasm 1 stepping stone (gap 910-1080)
-      { x:  946, y: 570, w:  58, h: 18 },
-      // Chasm 2 — two stones (gap 2360-2560)
-      { x: 2385, y: 558, w:  52, h: 18 },
-      { x: 2482, y: 542, w:  52, h: 18 },
-      // Chasm 3 — two stones (gap 3790-3980)
-      { x: 3818, y: 562, w:  52, h: 18 },
-      { x: 3906, y: 546, w:  52, h: 18 },
-      // Chasm 4 stepping stone (gap 5060-5230)
-      { x: 5100, y: 570, w:  58, h: 18 },
-      // Elevated platforms
-      { x:  160, y: 500, w: 140, h: 18 },
-      { x:  380, y: 390, w: 160, h: 18 },
-      { x:  620, y: 295, w: 180, h: 18 },
-      { x:  860, y: 430, w: 140, h: 18 },
-      { x: 1090, y: 330, w: 160, h: 18 },
-      { x: 1330, y: 215, w: 180, h: 18 },
-      { x: 1570, y: 390, w: 140, h: 18 },
-      { x: 1810, y: 280, w: 160, h: 18 },
-      { x: 2060, y: 185, w: 180, h: 18 },
-      { x: 2310, y: 355, w: 140, h: 18 },
-      { x: 2560, y: 255, w: 160, h: 18 },
-      { x: 2810, y: 420, w: 140, h: 18 },
-      { x: 3060, y: 315, w: 160, h: 18 },
-      { x: 3310, y: 205, w: 180, h: 18 },
-      { x: 3560, y: 380, w: 140, h: 18 },
-      { x: 3810, y: 275, w: 160, h: 18 },
-      { x: 4060, y: 460, w: 140, h: 18 },
-      { x: 4310, y: 355, w: 160, h: 18 },
-      { x: 4560, y: 245, w: 180, h: 18 },
-      { x: 4810, y: 490, w: 200, h: 18 },
+      // Ground — four chasms (620-1000, 1600-2100, 2820-3260, 3900-4200)
+      { x: -300, y: 640, w:  920, h: 120 },  // A: -300 → 620
+      { x: 1000, y: 640, w:  600, h: 120 },  // B: 1000 → 1600
+      { x: 2100, y: 640, w:  720, h: 120 },  // C: 2100 → 2820
+      { x: 3260, y: 640, w:  640, h: 120 },  // D: 3260 → 3900
+      { x: 4200, y: 640, w: 1600, h: 120 },  // E: 4200 → end (keeper area)
+      // Chasm 1 (620-1000, 380px): three stones
+      { x:  636, y: 562, w:  58, h: 18 },
+      { x:  776, y: 548, w:  56, h: 18 },
+      { x:  910, y: 564, w:  58, h: 18 },
+      // Chasm 2 (1600-2100, 500px): four stones
+      { x: 1616, y: 560, w:  56, h: 18 },
+      { x: 1756, y: 546, w:  54, h: 18 },
+      { x: 1900, y: 560, w:  54, h: 18 },
+      { x: 2036, y: 548, w:  56, h: 18 },
+      // Chasm 3 (2820-3260, 440px): three stones
+      { x: 2836, y: 558, w:  58, h: 18 },
+      { x: 2990, y: 544, w:  56, h: 18 },
+      { x: 3138, y: 560, w:  58, h: 18 },
+      // Chasm 4 (3900-4200, 300px): two stones
+      { x: 3916, y: 564, w:  60, h: 18 },
+      { x: 4060, y: 550, w:  58, h: 18 },
+      // ── Building 1 (section A) ────────────────────────────────────────
+      { x:  110, y: 460, w: 200, h: 18 },   // lower floor
+      { x:   90, y: 300, w: 260, h: 18 },   // rooftop (160px rise — max safe)
+      { x:  380, y: 400, w: 185, h: 18 },   // adjacent building lower
+      { x:  365, y: 250, w: 235, h: 18 },   // adjacent rooftop
+      // ── Building 2 (near chasm 1) ─────────────────────────────────────
+      { x:  800, y: 390, w: 175, h: 18 },   // fire-escape ledge near gap
+      // ── Building 3 (section B) ────────────────────────────────────────
+      { x: 1020, y: 450, w: 215, h: 18 },
+      { x: 1005, y: 290, w: 270, h: 18 },   // rooftop
+      { x: 1330, y: 380, w: 185, h: 18 },
+      { x: 1320, y: 230, w: 230, h: 18 },
+      // ── Building 4 (section C) ────────────────────────────────────────
+      { x: 2120, y: 440, w: 220, h: 18 },
+      { x: 2105, y: 280, w: 270, h: 18 },
+      { x: 2440, y: 380, w: 190, h: 18 },
+      { x: 2430, y: 225, w: 240, h: 18 },
+      // ── Building 5 (near chasm 3) ─────────────────────────────────────
+      { x: 2900, y: 400, w: 170, h: 18 },
+      // ── Building 6 (section D — tallest, obelisco district) ───────────
+      { x: 3280, y: 450, w: 220, h: 18 },
+      { x: 3265, y: 290, w: 265, h: 18 },
+      { x: 3265, y: 150, w: 245, h: 18 },   // penthouse (290→150 = 140px, OK)
+      { x: 3590, y: 380, w: 180, h: 18 },
+      { x: 3580, y: 230, w: 220, h: 18 },
+      // ── Building 7 (section E approach) ──────────────────────────────
+      { x: 4220, y: 450, w: 210, h: 18 },
+      { x: 4210, y: 290, w: 260, h: 18 },
+      { x: 4530, y: 400, w: 190, h: 18 },
+      { x: 4520, y: 250, w: 240, h: 18 },
+      // ── Final stretch (keeper boss zone) ──────────────────────────────
+      { x: 4850, y: 480, w: 210, h: 18 },
     ],
     enemies: [
-      // Ground enemies — all clear of chasms
-      { x:  350, y: 585, patrol: 80,  type: 'grunt'   },  // A: 270-430
-      { x:  560, y: 585, patrol: 120, type: 'speeder' },  // A: 440-680
-      { x:  780, y: 585, patrol: 80,  type: 'grunt'   },  // A: 700-860, clear of chasm 910
-      { x: 1160, y: 585, patrol: 75,  type: 'speeder' },  // B: 1085-1235, just past chasm
-      { x: 1380, y: 585, patrol: 120, type: 'speeder' },  // B
-      { x: 1640, y: 585, patrol: 80,  type: 'grunt'   },  // B
-      { x: 1860, y: 585, patrol: 130, type: 'speeder' },  // B
-      { x: 2140, y: 585, patrol: 80,  type: 'grunt'   },  // B
-      { x: 2280, y: 585, patrol: 70,  type: 'grunt'   },  // B: 2210-2350, clear of chasm 2360
-      { x: 2650, y: 585, patrol: 80,  type: 'speeder' },  // C: 2570-2730, just past chasm
-      { x: 2870, y: 585, patrol: 130, type: 'speeder' },  // C
-      { x: 3120, y: 585, patrol: 80,  type: 'grunt'   },  // C
-      { x: 3360, y: 585, patrol: 120, type: 'speeder' },  // C
-      { x: 3580, y: 585, patrol: 80,  type: 'grunt'   },  // C
-      { x: 3680, y: 585, patrol: 90,  type: 'speeder' },  // C: 3590-3770, clear of chasm 3790
-      { x: 4060, y: 585, patrol: 75,  type: 'grunt'   },  // D: 3985-4135, just past chasm
-      { x: 4290, y: 585, patrol: 120, type: 'speeder' },  // D
-      { x: 4820, y: 585, patrol: 80,  type: 'grunt'   },  // D: 4740-4900, clear of chasm 5060
-      { x: 5310, y: 585, patrol: 70,  type: 'grunt'   },  // E: 5240-5380, just past last chasm
-      // Platform jumpers
-      { x:  180, y: 445, patrol: 50,  type: 'jumper'  },
-      { x:  640, y: 240, patrol: 65,  type: 'jumper'  },
-      { x: 1350, y: 160, patrol: 70,  type: 'jumper'  },
-      { x: 1830, y: 225, patrol: 65,  type: 'jumper'  },
-      { x: 2080, y: 130, patrol: 70,  type: 'jumper'  },
-      { x: 2580, y: 200, patrol: 65,  type: 'jumper'  },
-      { x: 3330, y: 150, patrol: 70,  type: 'jumper'  },
-      { x: 3580, y: 325, patrol: 65,  type: 'jumper'  },
-      { x: 4330, y: 300, patrol: 65,  type: 'jumper'  },
-      { x: 4580, y: 190, patrol: 70,  type: 'jumper'  },
-      { x: 4830, y: 435, patrol: 65,  type: 'jumper'  },
-      // Boss
-      { x: 4860, y: 558, patrol: 115, type: 'boss', hp: 10 },
+      // Ground enemies on narrow corridors — mostly fast speeders (dangerous)
+      { x:  340, y: 585, patrol:  80, type: 'speeder' },  // A
+      { x:  520, y: 585, patrol: 100, type: 'speeder' },  // A, clear of 620
+      { x: 1060, y: 585, patrol:  75, type: 'speeder' },  // B, just past chasm 1
+      { x: 1350, y: 585, patrol:  90, type: 'grunt'   },  // B, clear of 1600
+      { x: 2160, y: 585, patrol:  80, type: 'speeder' },  // C, just past chasm 2
+      { x: 2480, y: 585, patrol: 100, type: 'speeder' },  // C, clear of 2820
+      { x: 3310, y: 585, patrol:  90, type: 'speeder' },  // D, just past chasm 3
+      { x: 3640, y: 585, patrol:  80, type: 'grunt'   },  // D, clear of 3900
+      { x: 4260, y: 585, patrol:  90, type: 'speeder' },  // E
+      { x: 4600, y: 585, patrol: 100, type: 'speeder' },  // E
+      // Platform enemies — jumpers on rooftops, grunts on lower floors
+      { x:  130, y: 405, patrol:  70, type: 'grunt'   },  // Bldg1 lower (y=460)
+      { x:  110, y: 245, patrol:  85, type: 'jumper'  },  // Bldg1 rooftop (y=300)
+      { x:  385, y: 195, patrol:  80, type: 'grunt'   },  // Bldg1b rooftop (y=250)
+      { x: 1025, y: 395, patrol:  75, type: 'grunt'   },  // Bldg3 lower
+      { x: 1010, y: 235, patrol:  90, type: 'jumper'  },  // Bldg3 rooftop
+      { x: 1335, y: 175, patrol:  75, type: 'jumper'  },
+      { x: 2125, y: 385, patrol:  75, type: 'grunt'   },  // Bldg4 lower
+      { x: 2110, y: 225, patrol:  90, type: 'jumper'  },  // Bldg4 rooftop
+      { x: 2445, y: 170, patrol:  80, type: 'jumper'  },
+      { x: 3285, y: 395, patrol:  80, type: 'grunt'   },  // Bldg6 lower
+      { x: 3270, y: 235, patrol:  85, type: 'jumper'  },  // Bldg6 mid
+      { x: 3270, y:  95, patrol:  75, type: 'jumper'  },  // Bldg6 penthouse
+      { x: 3595, y: 175, patrol:  75, type: 'grunt'   },
+      { x: 4225, y: 235, patrol:  85, type: 'jumper'  },  // Bldg7
+      { x: 4535, y: 195, patrol:  80, type: 'jumper'  },
+      // Goalkeeper Boss
+      { x: 4900, y: 558, patrol: 110, type: 'keeper-boss', hp: 4 },
     ],
   },
 ];
@@ -393,13 +441,21 @@ class Enemy {
       this.projectiles = [];
     } else if (this.type === 'stun-boss') {
       this.w = 72; this.h = 88;
-      this.maxHp = data.hp || 9; this.hp = this.maxHp;
+      this.maxHp = data.hp || 7; this.hp = this.maxHp;
       this.speed = 1.7;
       this.confused = false;
       this.confuseTimer = 0;
       this.starAngle = 0;
       this.raging = false;
       this.shotTimer = 280 + Math.floor(Math.random() * 80);
+      this.projectiles = [];
+    } else if (this.type === 'keeper-boss') {
+      this.w = 84; this.h = 96;
+      this.maxHp = data.hp || 4; this.hp = this.maxHp;
+      this.speed = 3.2;
+      this.raging = false;
+      this.goalHalfW = 120; // half-width of goal opening beyond keeper body
+      this.diveDir = 0; this.diveTimer = 0;
       this.projectiles = [];
     } else if (this.type === 'speeder') {
       this.w = 36; this.h = 48;
@@ -452,10 +508,10 @@ class Enemy {
       if (this.fTimer >= 8) { this.frame = (this.frame + 1) % 4; this.fTimer = 0; }
     }
     // ── Boss rage mode ─────────────────────────────────────────────────────
-    if ((this.type === 'boss' || this.type === 'stun-boss') && !this.raging && this.hp > 0) {
+    if ((this.type === 'boss' || this.type === 'stun-boss' || this.type === 'keeper-boss') && !this.raging && this.hp > 0) {
       if (this.hp <= Math.ceil(this.maxHp / 2)) {
         this.raging = true;
-        this.speed *= 1.85;
+        this.speed *= (this.type === 'keeper-boss' ? 1.7 : 1.85);
         this.patrol *= 1.4;
         addText(this.x + this.w/2, this.y - 42, '💀 ¡ENRAGED!', '#FF2200');
         doShake(12);
@@ -496,17 +552,37 @@ class Enemy {
 
   stun() {
     this.confused = true;
-    this.confuseTimer = 170;
+    this.confuseTimer = 210;
     this.starAngle = 0;
     this.hitFlash = 0;
   }
 
+  // Called when ball slips past the keeper into the goal — actual damage
+  goalHit() {
+    this.hp--;
+    this.hitFlash = 20;
+    sfxHit(); doShake(9);
+    spawnParticles(this.x + this.w/2, this.y + this.h/2, 32,
+      ['#FFD700','#74AADB','#FFFFFF','#FFD700','#AAEEAA']);
+    if (this.hp <= 0) { this.die(); return true; }
+    addText(this.x + this.w/2, this.y - 16, `⚽ GOAL! ${this.hp} more!`, '#FFD700');
+    return false;
+  }
+
   // Returns true if enemy is now dead
   hit() {
+    if (this.type === 'keeper-boss') {
+      // Direct body hit = SAVED — deflect ball, no damage
+      sfxHit();
+      this.hitFlash = 10;
+      spawnParticles(this.x + this.w/2, this.y + this.h/2, 12, ['#FF8800','#FFD700','#fff']);
+      addText(this.x + this.w/2, this.y - 22, '🧤 SAVED! Aim for the corners!', '#FF8800');
+      return false;
+    }
     if (this.type === 'stun-boss') {
       if (!this.confused) {
         sfxHit();
-        addText(this.x + this.w/2, this.y - 22, 'Send the cat first!  (F)', '#88CCFF');
+        addText(this.x + this.w/2, this.y - 22, 'Send the cat first!  (Z)', '#88CCFF');
         spawnParticles(this.x + this.w/2, this.y, 8, ['#88CCFF','#fff']);
         return false;
       }
@@ -539,7 +615,7 @@ class Enemy {
     this.alive = false;
     spawnParticles(this.x + this.w/2, this.y + this.h/2, 36,
       ['#FF4444','#FF8800','#FFEE00','#fff','#FF6688','#FF99AA']);
-    const isBoss = this.type === 'boss' || this.type === 'stun-boss';
+    const isBoss = this.type === 'boss' || this.type === 'stun-boss' || this.type === 'keeper-boss';
     const msg = isBoss ? 'BOSS DOWN! +500' : '+100';
     addText(this.x + this.w/2, this.y - 12, msg, '#FFD700');
     if (isBoss) sfxWin(); else sfxGoal();
@@ -549,15 +625,38 @@ class Enemy {
     if (!this.alive) return;
     const sx = this.x - camX;
     if (sx < -120 || sx > W + 120) return;
+
+    // Keeper-boss: draw goal posts in screen space before any transform
+    if (this.type === 'keeper-boss') {
+      const gL = this.startX - this.goalHalfW - camX;
+      const gR = this.startX + this.w + this.goalHalfW - camX;
+      const gTop = this.y - 24;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,0.20)'; ctx.lineWidth = 1;
+      for (let nx = gL; nx <= gR + 12; nx += 22) {
+        ctx.beginPath(); ctx.moveTo(nx, gTop); ctx.lineTo(nx, this.y + this.h); ctx.stroke();
+      }
+      for (let ny = gTop; ny <= this.y + this.h; ny += 22) {
+        ctx.beginPath(); ctx.moveTo(gL, ny); ctx.lineTo(gR + 12, ny); ctx.stroke();
+      }
+      ctx.shadowBlur = 10; ctx.shadowColor = '#fff';
+      ctx.fillStyle = '#EEE';
+      ctx.fillRect(gL, gTop, 12, this.h + 24);       // left post
+      ctx.fillRect(gR, gTop, 12, this.h + 24);       // right post
+      ctx.fillRect(gL, gTop, gR - gL + 12, 12);      // crossbar
+      ctx.restore();
+    }
+
     ctx.save();
     if (this.hitFlash > 0 && this.hitFlash % 4 < 2) ctx.globalAlpha = 0.4;
     ctx.translate(sx + (this.facing ? 0 : this.w), this.y);
     ctx.scale(this.facing ? 1 : -1, 1);
-    if      (this.type === 'boss')      this._drawBoss();
-    else if (this.type === 'stun-boss') this._drawStunBoss();
-    else if (this.type === 'speeder')   this._drawSpeeder();
-    else if (this.type === 'jumper')    this._drawJumper();
-    else                                this._drawGrunt();
+    if      (this.type === 'boss')         this._drawBoss();
+    else if (this.type === 'stun-boss')   this._drawStunBoss();
+    else if (this.type === 'keeper-boss') this._drawKeeper();
+    else if (this.type === 'speeder')     this._drawSpeeder();
+    else if (this.type === 'jumper')      this._drawJumper();
+    else                                  this._drawGrunt();
     ctx.restore();
     // Boss projectiles
     if (this.projectiles && this.projectiles.length) {
@@ -575,19 +674,22 @@ class Enemy {
         ctx.restore();
       }
     }
-    // Boss / stun-boss HP bar
-    if (this.type === 'boss' || this.type === 'stun-boss') {
+    // Boss / stun-boss / keeper-boss HP bar
+    if (this.type === 'boss' || this.type === 'stun-boss' || this.type === 'keeper-boss') {
       const bx = sx, by = this.y - 22;
       ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(bx, by, this.w, 12);
       const barCol = this.type === 'stun-boss'
         ? (this.confused ? '#44CCFF' : '#AA66FF')
+        : this.type === 'keeper-boss' ? '#44DD88'
         : (this.hp > this.maxHp / 2 ? '#44FF44' : '#FF4444');
       ctx.fillStyle = barCol;
       ctx.fillRect(bx, by, this.w * (this.hp / this.maxHp), 12);
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
       ctx.strokeRect(bx, by, this.w, 12);
       ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Arial'; ctx.textAlign = 'center';
-      const label = this.type === 'stun-boss' ? (this.confused ? '😵 STUNNED!' : 'BOSS') : 'BOSS';
+      const label = this.type === 'stun-boss' ? (this.confused ? '😵 STUNNED!' : 'BOSS')
+        : this.type === 'keeper-boss' ? `🧤 ${this.hp}/${this.maxHp} saves`
+        : 'BOSS';
       ctx.fillText(label, bx + this.w/2, by - 3);
       // confusion stars orbiting head
       if (this.type === 'stun-boss' && this.confused) {
@@ -931,6 +1033,94 @@ class Enemy {
       ctx.fillText('★', cx - (this.maxHp-1)*8 + i*16, h + 18);
     }
     ctx.restore(); // undo wobble
+  }
+
+  _drawKeeper() {
+    const w = this.w, h = this.h, cx = w / 2;
+    const t = Date.now() / 500;
+    const sw = Math.sin(this.frame * Math.PI / 2) * 0.32;
+
+    // ── Aura glow (green) ─────────────────────────────────────────────────
+    ctx.save(); ctx.globalAlpha = 0.14 + Math.sin(t) * 0.06;
+    const gr = ctx.createRadialGradient(cx, h/2, 0, cx, h/2, w * 0.95);
+    gr.addColorStop(0, '#00DD66'); gr.addColorStop(1, 'transparent');
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(cx, h/2, w * 0.95, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+    if (this.raging) {
+      ctx.save(); ctx.globalAlpha = 0.28 + Math.abs(Math.sin(t*4))*0.14;
+      const rg = ctx.createRadialGradient(cx, h/2, 0, cx, h/2, w * 1.2);
+      rg.addColorStop(0, '#FF6600'); rg.addColorStop(1, 'transparent');
+      ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(cx, h/2, w*1.2, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.28)';
+    ctx.beginPath(); ctx.ellipse(cx, h+4, 32, 8, 0, 0, Math.PI*2); ctx.fill();
+
+    // Legs
+    ctx.save(); ctx.translate(cx-12, h-32); ctx.rotate(sw);
+    ctx.fillStyle = '#003300'; ctx.fillRect(-7, 0, 14, 14);
+    ctx.fillStyle = '#CCB888'; ctx.fillRect(-6, 14, 12, 18);
+    ctx.fillStyle = '#226622'; ctx.fillRect(-8, 31, 16, 8); ctx.restore();
+    ctx.save(); ctx.translate(cx+12, h-32); ctx.rotate(-sw);
+    ctx.fillStyle = '#003300'; ctx.fillRect(-7, 0, 14, 14);
+    ctx.fillStyle = '#CCB888'; ctx.fillRect(-6, 14, 12, 18);
+    ctx.fillStyle = '#226622'; ctx.fillRect(-7, 31, 16, 8); ctx.restore();
+
+    // Body — fluorescent yellow/green keeper kit
+    const bodyG = ctx.createLinearGradient(0, 20, 0, h-30);
+    bodyG.addColorStop(0, this.raging ? '#FF6600' : '#AACC00');
+    bodyG.addColorStop(1, this.raging ? '#CC3300' : '#558800');
+    ctx.fillStyle = bodyG; ctx.fillRect(5, 20, w-10, h-50);
+    ctx.fillStyle = '#003300'; ctx.fillRect(5, 20, w-10, (h-50)*0.22); // dark collar stripe
+    ctx.fillStyle = '#FFD700'; ctx.font = 'bold 14px Arial'; ctx.textAlign = 'center';
+    ctx.fillText('GK', cx, h-33);
+
+    // Big keeper gloves
+    ctx.save(); ctx.translate(5, 26); ctx.rotate(-sw*0.5);
+    ctx.fillStyle = '#228B22'; ctx.fillRect(-14, 0, 14, 20);
+    ctx.fillStyle = '#44AA44'; ctx.fillRect(-16, 18, 16, 10); // glove
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 0.8;
+    for (let f = 0; f < 3; f++) ctx.strokeRect(-14+f*4, 20, 3, 8); // fingers
+    ctx.restore();
+    ctx.save(); ctx.translate(w-5, 26); ctx.rotate(sw*0.5);
+    ctx.fillStyle = '#228B22'; ctx.fillRect(0, 0, 14, 20);
+    ctx.fillStyle = '#44AA44'; ctx.fillRect(0, 18, 16, 10);
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 0.8;
+    for (let f = 0; f < 3; f++) ctx.strokeRect(2+f*4, 20, 3, 8);
+    ctx.restore();
+
+    // Head
+    ctx.fillStyle = '#CCB888';
+    ctx.beginPath(); ctx.arc(cx, 14, 19, 0, Math.PI*2); ctx.fill();
+    // Keeper gloves on head (cap)
+    ctx.fillStyle = this.raging ? '#FF6600' : '#228B22';
+    ctx.beginPath(); ctx.arc(cx, 7, 19, Math.PI*0.88, Math.PI*0.12, true); ctx.fill();
+    ctx.fillRect(cx-19, 6, 9, 11); ctx.fillRect(cx+10, 6, 9, 11);
+    // Cap brim
+    ctx.fillStyle = this.raging ? '#AA3300' : '#145214';
+    ctx.fillRect(cx-22, 14, 44, 5);
+    // Eyes — determined/focused
+    ctx.fillStyle = '#1A0800';
+    ctx.beginPath(); ctx.arc(cx-6, 15, 3, 0, Math.PI*2); ctx.arc(cx+6, 15, 3, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(cx-5, 14, 1, 0, Math.PI*2); ctx.arc(cx+7, 14, 1, 0, Math.PI*2); ctx.fill();
+    // Determined brows
+    ctx.strokeStyle = '#1A0800'; ctx.lineWidth = 2.8;
+    ctx.beginPath(); ctx.moveTo(cx-11, 8); ctx.lineTo(cx-2, 11);
+    ctx.moveTo(cx+11, 8); ctx.lineTo(cx+2, 11); ctx.stroke();
+    // Mouth — grim/focused
+    ctx.strokeStyle = '#7A3A10'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(cx-6, 21); ctx.lineTo(cx+6, 21); ctx.stroke();
+
+    // HP stars
+    ctx.globalAlpha = 1;
+    for (let i = 0; i < this.maxHp; i++) {
+      ctx.fillStyle = i < this.hp ? '#44DD88' : '#333';
+      ctx.font = '14px serif'; ctx.textAlign = 'center';
+      ctx.fillText('★', cx - (this.maxHp-1)*9 + i*18, h + 18);
+    }
   }
 }
 
@@ -1286,6 +1476,23 @@ class Ball {
       if (this.x < -300 || this.y > 850) this.returning = true;
       if (Math.abs(this.vx) < 1.2 && this.vy > 0 && this.y > 580) this.returning = true;
       this.vx *= 0.999;
+      // Keeper-boss: check if ball slips into goal zone past the keeper
+      for (const e of enemies) {
+        if (!e.alive || e.type !== 'keeper-boss') continue;
+        const goalLeft  = e.startX - e.goalHalfW;
+        const goalRight = e.startX + e.w + e.goalHalfW;
+        const inGoalX = this.x > goalLeft && this.x < goalRight + 12;
+        const inGoalY = this.y > e.y - 20 && this.y < e.y + e.h;
+        const hitsKeeper = this.x + this.r > e.x + 6 && this.x - this.r < e.x + e.w - 6 &&
+                           this.y + this.r > e.y + 6 && this.y - this.r < e.y + e.h - 6;
+        if (inGoalX && inGoalY && !hitsKeeper && this.vx > 1 && !this.returning) {
+          const dead = e.goalHit();
+          this.returning = true; this.vx *= -0.25; this.vy = -5;
+          spawnParticles(this.x, this.y, 40, ['#FFD700','#74AADB','#FFFFFF','#44DD88']);
+          if (dead) return 500;
+          return 0;
+        }
+      }
       // Enemy collision
       for (const e of enemies) {
         if (!e.alive) continue;
@@ -1377,6 +1584,8 @@ class Player {
     this.dead = false;
     this.deadTimer = 0;
     this.invincible = 0; // flash frames after respawn
+    this.sliding = false;
+    this.slideTimer = 0;
   }
 
   die() {
@@ -1425,11 +1634,24 @@ class Player {
       this.vy = JUMP_FORCE; this.onGround = false; this.coyote = 0; sfxJump();
     }
     const kickKey = keys['KeyX'] || keys['ShiftLeft'] || keys['ShiftRight'];
-    if (kickKey && this.hasBall && this.kickCD <= 0) {
+    const slideKey = keys['ArrowDown'] || keys['KeyS'];
+    // Slide tackle: down + kick on ground
+    if (kickKey && slideKey && this.onGround && !this.sliding && this.kickCD <= 0) {
+      this.sliding = true;
+      this.slideTimer = 30;
+      this.vx = this.facing ? 13 : -13;
+      this.vy = 0;
+      this.kickCD = 44;
+    } else if (kickKey && this.hasBall && this.kickCD <= 0 && !this.sliding) {
       ball.kick(this);
       this.hasBall  = false;
       this.kickTimer = 20;
       this.kickCD   = 22;
+    }
+    if (this.sliding) {
+      this.slideTimer--;
+      this.vx *= 0.93;
+      if (this.slideTimer <= 0) { this.sliding = false; }
     }
     if (!ball.active && !this.hasBall) this.hasBall = true;
 
@@ -1480,6 +1702,26 @@ class Player {
     // blink during invincibility
     if (this.invincible > 0 && Math.floor(this.invincible / 6) % 2 === 0) return;
     const sx = this.x - camX;
+    if (this.sliding) {
+      ctx.save();
+      // dust cloud behind the slide
+      ctx.globalAlpha = 0.40 * (this.slideTimer / 30);
+      ctx.fillStyle = '#C8B090';
+      ctx.beginPath();
+      ctx.ellipse(sx + (this.facing ? -14 : this.w + 14), this.y + this.h - 6, 28, 9, 0, 0, Math.PI*2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      // squish Messi into a horizontal sliding pose
+      ctx.translate(sx + this.w/2, this.y + this.h * 0.72);
+      ctx.scale(this.facing ? 1 : -1, 1);
+      ctx.save();
+      ctx.scale(1.15, 0.44);
+      ctx.translate(-this.w/2, -this.h * 0.72);
+      this._drawMessi();
+      ctx.restore();
+      ctx.restore();
+      return;
+    }
     ctx.save();
     ctx.translate(sx + (this.facing ? 0 : this.w), this.y);
     ctx.scale(this.facing ? 1 : -1, 1);
@@ -1546,6 +1788,32 @@ const bsasStars = Array.from({length: 120}, () => ({
   x: Math.random() * 7000, y: Math.random() * 340,
   r: Math.random() * 1.9 + 0.3, phase: Math.random() * Math.PI * 2
 }));
+
+// ─── Rain (Obelisco level) ─────────────────────────────────────────────────────
+const rainDrops = Array.from({length: 220}, () => ({
+  x: Math.random() * W, y: Math.random() * H,
+  len: 8 + Math.random() * 14, spd: 11 + Math.random() * 7
+}));
+function updateRain() {
+  for (const r of rainDrops) {
+    r.y += r.spd; r.x -= r.spd * 0.18;
+    if (r.y > H + 20) { r.y = -20; r.x = Math.random() * W; }
+    if (r.x < -20)    { r.x = W + Math.random() * 80; }
+  }
+}
+function drawRain() {
+  ctx.save();
+  ctx.strokeStyle = 'rgba(160,200,255,0.38)'; ctx.lineWidth = 1.1; ctx.lineCap = 'round';
+  for (const r of rainDrops) {
+    const ex = r.x - r.len * 0.18, ey = r.y + r.len;
+    ctx.beginPath(); ctx.moveTo(r.x, r.y); ctx.lineTo(ex, ey); ctx.stroke();
+  }
+  // Ground puddle shimmer
+  ctx.globalAlpha = 0.18;
+  ctx.fillStyle = '#88BBFF';
+  ctx.fillRect(0, H - 86, W, 6);
+  ctx.restore();
+}
 const _labocaCols = ['#E83A2A','#F5B800','#2266CC','#229B3A','#C02288','#FF8A00','#1A5C8C','#DD2211','#FFDD00','#0044BB'];
 const _bldgData = Array.from({length: 30}, (_, i) => ({
   x: i * 215 + (i%3)*55, w: 68 + (i%5)*18, h: 90 + (i%7)*28,
@@ -1572,27 +1840,56 @@ function drawBg(camX, t, theme) {
 }
 
 function _bgCaminito(camX, t) {
-  // Puffy clouds
+  // Sun — warm afternoon light
+  ctx.save(); ctx.shadowBlur = 60; ctx.shadowColor = '#FFE080';
+  const sunGr = ctx.createRadialGradient(W*0.78, 85, 0, W*0.78, 85, 75);
+  sunGr.addColorStop(0, '#FFF5C0'); sunGr.addColorStop(0.5, '#FFD060'); sunGr.addColorStop(1, 'rgba(255,200,50,0)');
+  ctx.fillStyle = sunGr; ctx.beginPath(); ctx.arc(W*0.78, 85, 75, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+  // Puffy clouds — larger and more varied
   const p0 = camX * 0.025 + t * 0.012;
-  const clds = [{x:150,y:72,r:52},{x:460,y:48,r:38},{x:860,y:65,r:62},{x:1350,y:52,r:42},{x:1750,y:70,r:55},{x:2250,y:42,r:50}];
+  const clds = [{x:150,y:72,r:58},{x:420,y:44,r:42},{x:760,y:62,r:70},{x:1200,y:50,r:48},{x:1680,y:68,r:62},{x:2100,y:40,r:55},{x:2600,y:75,r:46}];
   for (const c of clds) {
-    const cx2 = ((c.x - p0) % (W+250) + W+250) % (W+250) - 125;
-    ctx.save(); ctx.globalAlpha = 0.88; ctx.fillStyle = '#FFFFFF';
+    const cx2 = ((c.x - p0) % (W+300) + W+300) % (W+300) - 150;
+    ctx.save();
+    const shadow = ctx.createRadialGradient(cx2+8, c.y+12, 0, cx2, c.y, c.r*1.4);
+    shadow.addColorStop(0, 'rgba(180,210,240,0.18)'); shadow.addColorStop(1, 'transparent');
+    ctx.fillStyle = shadow; ctx.beginPath(); ctx.arc(cx2, c.y+14, c.r*1.4, 0, Math.PI*2); ctx.fill();
+    ctx.globalAlpha = 0.92; ctx.fillStyle = '#FEFEFE';
     ctx.beginPath(); ctx.arc(cx2, c.y, c.r, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx2+c.r*0.7, c.y+9, c.r*0.68, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx2-c.r*0.62, c.y+11, c.r*0.58, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx2+c.r*0.72, c.y+10, c.r*0.70, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx2-c.r*0.65, c.y+12, c.r*0.60, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx2+c.r*0.22, c.y-c.r*0.38, c.r*0.52, 0, Math.PI*2); ctx.fill();
     ctx.restore();
   }
-  // Río de la Plata (wide silver-brown estuary)
-  const riverG = ctx.createLinearGradient(0, 440, 0, 498);
-  riverG.addColorStop(0, '#7AAEC0'); riverG.addColorStop(1, '#8BBCCC');
-  ctx.fillStyle = riverG; ctx.fillRect(0, 440, W, 58);
-  const p00 = camX * 0.012;
-  for (let i = 0; i < 14; i++) {
-    const wx = ((i*145 - p00*0.4) % (W+40) + W+40) % (W+40) - 20;
-    ctx.save(); ctx.globalAlpha = 0.22 + Math.sin(t/26+i*0.75)*0.1;
-    ctx.fillStyle = '#C0DCE8'; ctx.fillRect(wx, 450 + Math.sin(t/28+i)*2, 95, 3); ctx.restore();
+  // Birds (seagulls flying across sky)
+  const pb = camX * 0.045 + t * 0.18;
+  for (let i = 0; i < 8; i++) {
+    const bx = ((i*310 + 60 - pb) % (W+400) + W+400) % (W+400) - 200;
+    const by = 95 + (i%4)*28 + Math.sin(t/22+i*1.4)*6;
+    const flap = Math.sin(t/8 + i*0.9) * 0.35;
+    ctx.save(); ctx.globalAlpha = 0.55; ctx.strokeStyle = '#334466'; ctx.lineWidth = 1.4; ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(bx-9, by + flap*8); ctx.quadraticCurveTo(bx-4, by-3, bx, by);
+    ctx.quadraticCurveTo(bx+4, by-3, bx+9, by + flap*8);
+    ctx.stroke(); ctx.restore();
   }
+  // Río de la Plata (wide silver-brown estuary) — with shimmer and boat
+  const riverG = ctx.createLinearGradient(0, 434, 0, 502);
+  riverG.addColorStop(0, '#6FA8C0'); riverG.addColorStop(0.6, '#7BBACE'); riverG.addColorStop(1, '#9ACBD8');
+  ctx.fillStyle = riverG; ctx.fillRect(0, 434, W, 68);
+  const p00 = camX * 0.012;
+  for (let i = 0; i < 16; i++) {
+    const wx = ((i*138 - p00*0.4) % (W+40) + W+40) % (W+40) - 20;
+    ctx.save(); ctx.globalAlpha = 0.28 + Math.sin(t/24+i*0.8)*0.12;
+    ctx.fillStyle = '#C8E4F2'; ctx.fillRect(wx, 444 + Math.sin(t/26+i)*2.5, 85, 3); ctx.restore();
+  }
+  // Small boat on river
+  const boatX = ((t * 0.55 - camX * 0.008) % (W+160) + W+160) % (W+160) - 80;
+  ctx.save(); ctx.globalAlpha = 0.62;
+  ctx.fillStyle = '#8B4513'; ctx.fillRect(boatX, 454, 38, 9);
+  ctx.fillStyle = '#DDD'; ctx.beginPath(); ctx.moveTo(boatX+10, 454); ctx.lineTo(boatX+14, 430); ctx.lineTo(boatX+28, 454); ctx.closePath(); ctx.fill();
+  ctx.restore();
   // Far La Boca buildings (corrugated metal, very colorful)
   const p1 = camX * 0.055;
   for (let i = 0; i < 22; i++) {
@@ -1633,6 +1930,30 @@ function _bgCaminito(camX, t) {
     if (fx > W+80) continue;
     _miniArgFlag(fx, 490, 0.48);
   }
+  // Laundry lines strung between buildings
+  const pL = camX * 0.26;
+  const laundryColors = ['#E83A2A','#74AADB','#FFFFFF','#F5B800','#44AA44','#FF88CC','#FFDD00'];
+  for (let i = 0; i < 10; i++) {
+    const lx = ((i*390 + 140 - pL) % 5600 + 5600) % 5600;
+    if (lx > W + 150) continue;
+    const ly = 488 + (i%3)*12;
+    // Sagging line
+    ctx.save(); ctx.strokeStyle = 'rgba(80,60,40,0.45)'; ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    ctx.moveTo(lx, ly); ctx.quadraticCurveTo(lx+70, ly+10, lx+140, ly); ctx.stroke();
+    // Clothes hanging
+    for (let j = 0; j < 5; j++) {
+      const cx4 = lx + 18 + j*26;
+      const cy4 = ly + 4;
+      ctx.fillStyle = laundryColors[(i+j) % laundryColors.length];
+      // shirt shape
+      ctx.fillRect(cx4-6, cy4, 12, 14);
+      ctx.fillRect(cx4-10, cy4, 5, 7); ctx.fillRect(cx4+5, cy4, 5, 7);
+      // clip
+      ctx.fillStyle = '#888'; ctx.fillRect(cx4-1, cy4-4, 3, 6);
+    }
+    ctx.restore();
+  }
   // Tango silhouettes
   const p3b = camX * 0.24;
   for (let i = 0; i < 5; i++) {
@@ -1654,17 +1975,31 @@ function _bgCaminito(camX, t) {
 
 function _bgBombonera(camX, t) {
   // Few dimming stars at top
-  for (let i = 0; i < 38; i++) {
+  for (let i = 0; i < 52; i++) {
     const s = bsasStars[i];
     const px = ((s.x - camX*0.07) % W + W) % W;
-    ctx.save(); ctx.globalAlpha = (Math.sin(t/70+s.phase)*0.3+0.7)*0.42;
-    ctx.fillStyle = '#FFE8C0'; ctx.beginPath(); ctx.arc(px, s.y*0.56, s.r*0.6, 0, Math.PI*2); ctx.fill(); ctx.restore();
+    ctx.save(); ctx.globalAlpha = (Math.sin(t/70+s.phase)*0.3+0.7)*0.48;
+    ctx.fillStyle = '#FFE8C0'; ctx.beginPath(); ctx.arc(px, s.y*0.58, s.r*0.7, 0, Math.PI*2); ctx.fill(); ctx.restore();
   }
-  // Setting sun / orange disk
-  ctx.save(); ctx.shadowBlur = 55; ctx.shadowColor = '#FF8800';
-  const sunGr = ctx.createRadialGradient(W*0.16, 332, 0, W*0.16, 332, 82);
-  sunGr.addColorStop(0, '#FFE870'); sunGr.addColorStop(0.45, '#FF9020'); sunGr.addColorStop(1, 'rgba(255,80,0,0)');
-  ctx.fillStyle = sunGr; ctx.beginPath(); ctx.arc(W*0.16, 332, 82, 0, Math.PI*2); ctx.fill(); ctx.restore();
+  // Horizon glow — layered sunset bands
+  const hGr = ctx.createLinearGradient(0, 200, 0, H);
+  hGr.addColorStop(0, 'transparent');
+  hGr.addColorStop(0.45, 'rgba(200,80,10,0.22)');
+  hGr.addColorStop(0.72, 'rgba(255,130,20,0.30)');
+  hGr.addColorStop(1, 'rgba(240,170,40,0.38)');
+  ctx.fillStyle = hGr; ctx.fillRect(0, 0, W, H);
+  // Setting sun / orange disk — larger with chromatic halo
+  ctx.save(); ctx.shadowBlur = 80; ctx.shadowColor = '#FF6600';
+  for (let ring = 3; ring >= 0; ring--) {
+    const rr = 38 + ring * 24;
+    const rg = ctx.createRadialGradient(W*0.16, 328, 0, W*0.16, 328, rr);
+    rg.addColorStop(0, ring===0?'#FFF5A0':'rgba(255,170,40,0)');
+    rg.addColorStop(0.5, ring===0?'#FFBB30':(`rgba(255,${120-ring*20},0,${0.08+ring*0.04})`));
+    rg.addColorStop(1, 'rgba(200,60,0,0)');
+    ctx.globalAlpha = ring===0?1:0.45; ctx.fillStyle = rg;
+    ctx.beginPath(); ctx.arc(W*0.16, 328, rr, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
   // Buenos Aires skyline silhouette
   const p1 = camX * 0.048;
   ctx.fillStyle = 'rgba(22,8,50,0.76)';
@@ -1700,15 +2035,60 @@ function _bgBombonera(camX, t) {
     ctx.fillStyle = i%2===0 ? '#F5B800' : '#1A3A8C'; ctx.fillRect(bx, 570+bob, 28, 38);
     ctx.fillStyle = i%2===0 ? '#1A3A8C' : '#F5B800'; ctx.fillRect(bx, 570+bob+12, 28, 14);
   }
-  // Crowd — Boca colours amarillo y azul
+  // Stadium floodlights (4 towers)
+  const floodPos = [W*0.08, W*0.28, W*0.68, W*0.92];
+  for (const fx of floodPos) {
+    ctx.save();
+    // Light shaft cone downward
+    const shaft = ctx.createLinearGradient(fx, 260, fx, 590);
+    shaft.addColorStop(0, 'rgba(255,240,180,0.13)');
+    shaft.addColorStop(1, 'transparent');
+    ctx.fillStyle = shaft;
+    ctx.beginPath(); ctx.moveTo(fx-4, 260); ctx.lineTo(fx-85, 590); ctx.lineTo(fx+85, 590); ctx.lineTo(fx+4, 260); ctx.closePath(); ctx.fill();
+    // Tower pole
+    ctx.fillStyle = '#AAA090'; ctx.fillRect(fx-3, 260, 6, 85);
+    // Light head
+    ctx.shadowBlur = 22; ctx.shadowColor = '#FFE860';
+    ctx.fillStyle = '#FFFCCC'; ctx.fillRect(fx-12, 260, 24, 8);
+    ctx.restore();
+  }
+  // Fireworks / crowd flares bursting in sky
+  for (let i = 0; i < 5; i++) {
+    const phase = (t / 240 + i * 0.4) % 1;
+    if (phase > 0.55) continue;
+    const age = phase < 0.3 ? phase/0.3 : 1 - (phase-0.3)/0.25;
+    const fx2 = W * (0.1 + i*0.19);
+    const fy2 = 90 + i*38 + Math.sin(i*2.2)*28;
+    const burstCol = ['#F5B800','#FF3030','#74AADB','#FF88FF','#44FF88'][i];
+    ctx.save(); ctx.globalAlpha = age * 0.75;
+    for (let r2 = 0; r2 < 10; r2++) {
+      const angle = (r2/10)*Math.PI*2;
+      const dist = phase * 52;
+      const ex2 = fx2 + Math.cos(angle)*dist, ey2 = fy2 + Math.sin(angle)*dist;
+      const spark = ctx.createRadialGradient(ex2, ey2, 0, ex2, ey2, 5);
+      spark.addColorStop(0, burstCol); spark.addColorStop(1, 'transparent');
+      ctx.fillStyle = spark; ctx.beginPath(); ctx.arc(ex2, ey2, 5, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+  }
+  // Crowd — Boca colours amarillo y azul, more rows
   const p4 = camX * 0.60;
-  for (let i = 0; i < 78; i++) {
-    const cx3 = ((i*38-p4) % 4800+4800) % 4800;
+  for (let i = 0; i < 110; i++) {
+    const cx3 = ((i*32-p4) % 4800+4800) % 4800;
     if (cx3 < -40 || cx3 > W+40) continue;
     const bob = Math.sin(t/17+i*0.85)*4;
-    ctx.fillStyle = i%3!==2 ? 'rgba(245,184,0,0.68)' : 'rgba(26,58,140,0.68)';
-    ctx.beginPath(); ctx.arc(cx3, 613+bob, 6, 0, Math.PI*2); ctx.fill();
-    ctx.fillRect(cx3-5, 619+bob, 10, 14);
+    const row = i % 3;
+    const py = 608 + row * 7;
+    ctx.fillStyle = i%3!==2 ? 'rgba(245,184,0,0.72)' : 'rgba(26,58,140,0.72)';
+    ctx.beginPath(); ctx.arc(cx3, py+bob, 5+row*0.5, 0, Math.PI*2); ctx.fill();
+    ctx.fillRect(cx3-4-row, py+5+bob, 9+row*2, 11+row*2);
+    // Waving scarves
+    if (i%4 === 0 && row === 0) {
+      ctx.save(); ctx.globalAlpha = 0.55;
+      ctx.fillStyle = i%6===0 ? '#F5B800' : '#1A3A8C';
+      ctx.fillRect(cx3-6, py+bob-12, 12, 4);
+      ctx.restore();
+    }
   }
 }
 
@@ -1759,39 +2139,118 @@ function _bgObelisco(camX, t) {
     const ox = ((rep*3200 + 1100 - obeOff) % 9600 + 9600) % 9600;
     if (ox < W+65 && ox > -65) _obeliscoShape(ox, 564, t);
   }
-  // Avenida 9 de Julio (world's widest avenue)
+  // Rain-haze atmosphere layer
+  const hazeG = ctx.createLinearGradient(0, 400, 0, H);
+  hazeG.addColorStop(0, 'transparent');
+  hazeG.addColorStop(1, 'rgba(30,50,100,0.28)');
+  ctx.fillStyle = hazeG; ctx.fillRect(0, 400, W, H - 400);
+
+  // Neon signs on buildings
+  const neonSigns = [
+    {tx: 0.05, ty: 0.54, col: '#FF2266', label: 'PIZZA'},
+    {tx: 0.22, ty: 0.50, col: '#22DDFF', label: 'HOTEL'},
+    {tx: 0.44, ty: 0.56, col: '#FFB800', label: 'BAR'},
+    {tx: 0.63, ty: 0.52, col: '#AA44FF', label: 'CINE'},
+    {tx: 0.82, ty: 0.55, col: '#FF5500', label: 'TAXI'},
+  ];
+  const p2b = camX * 0.115;
+  for (const ns of neonSigns) {
+    const nx = ((ns.tx * W + 1200 - p2b) % (W + 400) + W + 400) % (W + 400) - 200;
+    if (nx < -80 || nx > W + 80) continue;
+    const ny = ns.ty * H;
+    const flicker = Math.sin(t/9 + nx) > -0.85 ? 1 : 0.3;
+    ctx.save(); ctx.globalAlpha = flicker * (0.72 + Math.sin(t/28+nx)*0.16);
+    ctx.shadowBlur = 18; ctx.shadowColor = ns.col;
+    ctx.fillStyle = ns.col; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center';
+    ctx.fillText(ns.label, nx, ny);
+    ctx.restore();
+  }
+
+  // Avenida 9 de Julio (world's widest avenue) — wet road with reflections
   const p3 = camX * 0.21;
-  ctx.fillStyle = '#111222'; ctx.fillRect(0, 592, W, 28);
-  ctx.strokeStyle = 'rgba(255,255,150,0.28)'; ctx.lineWidth = 1.4; ctx.setLineDash([22,14]);
+  const roadG = ctx.createLinearGradient(0, 592, 0, 620);
+  roadG.addColorStop(0, '#0E1118'); roadG.addColorStop(1, '#14182A');
+  ctx.fillStyle = roadG; ctx.fillRect(0, 592, W, 28);
+  // Wet road reflections (puddles of lamplight and neon)
+  for (let i = 0; i < 8; i++) {
+    const rx = ((i*185+40-p3*0.6) % (W+60)+W+60) % (W+60) - 30;
+    ctx.save(); ctx.globalAlpha = 0.18+Math.sin(t/18+i)*0.08;
+    const refG = ctx.createLinearGradient(rx, 600, rx+80, 600);
+    refG.addColorStop(0, 'rgba(255,220,100,0)'); refG.addColorStop(0.5, 'rgba(255,220,100,0.5)'); refG.addColorStop(1, 'rgba(255,220,100,0)');
+    ctx.fillStyle = refG; ctx.fillRect(rx, 600, 80, 10);
+    ctx.restore();
+  }
+  ctx.strokeStyle = 'rgba(255,255,150,0.22)'; ctx.lineWidth = 1.4; ctx.setLineDash([22,14]);
   for (let lane = 0; lane < 5; lane++) {
     ctx.beginPath(); ctx.moveTo(-p3%36, 597+lane*5.2); ctx.lineTo(W-p3%36, 597+lane*5.2); ctx.stroke();
   }
   ctx.setLineDash([]);
-  // Street lights
+
+  // Moving cars (headlights + taillights)
+  const pCar = camX * 0.40;
+  for (let i = 0; i < 6; i++) {
+    const carX = ((i*340 + 80 - pCar) % (W+220)+W+220) % (W+220) - 110;
+    const carY = 597 + (i%2)*8;
+    const rightMoving = i%2===0;
+    ctx.save();
+    ctx.fillStyle = '#1A1A2A'; ctx.fillRect(carX, carY, 60, 11);
+    if (rightMoving) {
+      // White headlights front
+      ctx.globalAlpha = 0.65;
+      const hl = ctx.createRadialGradient(carX+56, carY+5, 0, carX+56, carY+5, 40);
+      hl.addColorStop(0, 'rgba(255,255,220,0.6)'); hl.addColorStop(1, 'transparent');
+      ctx.fillStyle = hl; ctx.beginPath(); ctx.arc(carX+56, carY+5, 40, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#FFFFF0'; ctx.fillRect(carX+50, carY+2, 8, 7);
+    } else {
+      // Red taillights back
+      ctx.globalAlpha = 0.55;
+      const tl = ctx.createRadialGradient(carX+4, carY+5, 0, carX+4, carY+5, 30);
+      tl.addColorStop(0, 'rgba(255,60,30,0.55)'); tl.addColorStop(1, 'transparent');
+      ctx.fillStyle = tl; ctx.beginPath(); ctx.arc(carX+4, carY+5, 30, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#FF4422'; ctx.fillRect(carX+2, carY+2, 8, 7);
+    }
+    ctx.restore();
+  }
+
+  // Street lights — brighter with larger rain halos
   for (let i = 0; i < 18; i++) {
     const lx = ((i*175-camX*0.27) % (W+100)+W+100) % (W+100) - 50;
     if (lx < -22 || lx > W+22) continue;
-    const pulse = 0.88+Math.sin(t/38+i)*0.08;
+    const pulse = 0.90+Math.sin(t/38+i)*0.07;
     ctx.save(); ctx.globalAlpha = pulse;
-    ctx.fillStyle = '#22202E'; ctx.fillRect(lx-2, 532, 4, 62); ctx.fillRect(lx-12, 532, 24, 5);
-    const glG = ctx.createRadialGradient(lx, 535, 0, lx, 535, 52);
-    glG.addColorStop(0, 'rgba(255,215,90,0.28)'); glG.addColorStop(1, 'transparent');
-    ctx.fillStyle = glG; ctx.beginPath(); ctx.arc(lx, 535, 52, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle = '#FFEE88'; ctx.fillRect(lx-10, 532, 20, 5);
+    ctx.fillStyle = '#1E1C2A'; ctx.fillRect(lx-2, 530, 4, 64); ctx.fillRect(lx-14, 530, 28, 5);
+    // Rain halo around lamp
+    const glG = ctx.createRadialGradient(lx, 533, 0, lx, 533, 72);
+    glG.addColorStop(0, 'rgba(255,215,90,0.32)'); glG.addColorStop(0.6, 'rgba(255,215,90,0.06)'); glG.addColorStop(1, 'transparent');
+    ctx.fillStyle = glG; ctx.beginPath(); ctx.arc(lx, 533, 72, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 14; ctx.shadowColor = '#FFEE88';
+    ctx.fillStyle = '#FFF5AA'; ctx.fillRect(lx-12, 530, 24, 5);
     ctx.restore();
   }
-  // Crowd — night crowd, some holding up phone screens
+
+  // Crowd — night crowd, umbrellas, phone screens
   const p4 = camX * 0.60;
-  for (let i = 0; i < 78; i++) {
-    const cx3 = ((i*38-p4) % 4800+4800) % 4800;
+  for (let i = 0; i < 95; i++) {
+    const cx3 = ((i*34-p4) % 4800+4800) % 4800;
     if (cx3 < -40 || cx3 > W+40) continue;
-    const bob = Math.sin(t/17+i*0.85)*4;
-    ctx.fillStyle = `rgba(${25+i%38},${25+i%32},${55+i%48},0.76)`;
-    ctx.beginPath(); ctx.arc(cx3, 613+bob, 6, 0, Math.PI*2); ctx.fill();
-    ctx.fillRect(cx3-5, 619+bob, 10, 14);
-    if (i%4===0) {
-      ctx.save(); ctx.globalAlpha = 0.52+Math.sin(t/28+i)*0.22;
-      ctx.fillStyle = '#88BBFF'; ctx.fillRect(cx3-3, 610+bob, 6, 5); ctx.restore();
+    const bob = Math.sin(t/17+i*0.85)*3;
+    ctx.fillStyle = `rgba(${22+i%35},${22+i%28},${50+i%44},0.80)`;
+    ctx.beginPath(); ctx.arc(cx3, 612+bob, 5, 0, Math.PI*2); ctx.fill();
+    ctx.fillRect(cx3-4, 617+bob, 9, 12);
+    // Umbrellas
+    if (i%3===0) {
+      ctx.save(); ctx.globalAlpha = 0.50;
+      const umbCol = ['#74AADB','#FF4466','#FFD700','#44AAFF','#AA88FF'][i%5];
+      ctx.fillStyle = umbCol;
+      ctx.beginPath(); ctx.arc(cx3, 608+bob, 8, Math.PI, 0); ctx.fill();
+      ctx.strokeStyle = '#555'; ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.moveTo(cx3, 608+bob); ctx.lineTo(cx3, 618+bob); ctx.stroke();
+      ctx.restore();
+    }
+    // Phone screens
+    if (i%5===0) {
+      ctx.save(); ctx.globalAlpha = 0.50+Math.sin(t/28+i)*0.22;
+      ctx.fillStyle = '#88BBFF'; ctx.fillRect(cx3-3, 608+bob, 6, 5); ctx.restore();
     }
   }
 }
@@ -1954,16 +2413,18 @@ function drawHUD(score, player, ball, cat, levelIdx, boss, goalScored) {
         ctx.fillText(`😵 BOSS STUNNED! Kick the ball! HP: ${boss.hp}/${boss.maxHp}`, W/2, 42);
       } else {
         ctx.fillStyle = '#CC88FF';
-        ctx.fillText(`🐱 Press F — send the cat to stun the boss first!  HP: ${boss.hp}/${boss.maxHp}`, W/2, 42);
+        ctx.fillText(`🐱 Press Z — send the cat to stun the boss first!  HP: ${boss.hp}/${boss.maxHp}`, W/2, 42);
       }
+    } else if (boss.type === 'keeper-boss') {
+      ctx.fillStyle = '#44DD88';
+      ctx.fillText(`🧤 GOALKEEPER! Kick past the keeper — ${boss.hp} goal${boss.hp!==1?'s':''} to win!`, W/2, 42);
     } else {
       ctx.fillStyle = '#FF6644';
       ctx.fillText(`⚔  Defeat the Boss!   HP: ${boss.hp} / ${boss.maxHp}`, W/2, 42);
     }
   } else if (!goalScored) {
     const pulse = Math.sin(Date.now()/300) * 0.4 + 0.6;
-    ctx.save(); ctx.globalAlpha = pulse;
-    ctx.fillStyle = '#44FFaa';
+    ctx.save(); ctx.globalAlpha = pulse; ctx.fillStyle = '#44FFaa';
     ctx.fillText('Boss defeated!  Kick the ball into the net! ⚽', W/2, 42);
     ctx.restore();
   } else {
@@ -1997,18 +2458,19 @@ function drawHUD(score, player, ball, cat, levelIdx, boss, goalScored) {
     } else if (cat.attackCD > 0) {
       ctx.fillStyle = '#FF9988'; ctx.fillText('🐱 Cat: recharging…', 18, 52);
     } else {
-      ctx.fillStyle = '#AADDFF'; ctx.fillText('🐱  F = cat pounce!', 18, 52);
+      ctx.fillStyle = '#AADDFF'; ctx.fillText('🐱  Z = cat pounce!', 18, 52);
     }
   }
 
   // Controls box
   ctx.fillStyle = 'rgba(0,0,0,0.42)';
-  roundRect(W-250, H-110, 244, 104, 8); ctx.fill();
+  roundRect(W-250, H-126, 244, 120, 8); ctx.fill();
   ctx.fillStyle = '#CCC'; ctx.font = '13px Arial'; ctx.textAlign = 'left';
-  ctx.fillText('Move:   ← → or A D',     W-238, H-88);
-  ctx.fillText('Jump:   ↑ or W or Space', W-238, H-69);
-  ctx.fillText('Kick:    X / Z / Shift',  W-238, H-50);
-  ctx.fillText('Cat pounce:  F',          W-238, H-31);
+  ctx.fillText('Move:   ← → or A D',           W-238, H-88);
+  ctx.fillText('Jump:   ↑ or W or Space',      W-238, H-69);
+  ctx.fillText('Kick:    X / Z / Shift',        W-238, H-50);
+  ctx.fillText('Slide:   ↓ or S + Kick',        W-238, H-31);
+  ctx.fillText('Cat pounce:  Z',                W-238, H-12);
   ctx.fillStyle = '#888';
   ctx.fillText('Touch enemies = lose a life!', W-238, H-12);
 }
@@ -2027,7 +2489,7 @@ function drawTitle(t) {
   ctx.fillText('Kick the ball at enemies to defeat them!', W/2, H/2+60);
   ctx.fillText('Kill the Boss, then shoot the ball into the net!', W/2, H/2+86);
   ctx.fillStyle = '#AADDFF'; ctx.font = '18px Arial';
-  ctx.fillText('🐱  Level 2 Boss: press F to send the cat — stun it first, then kick 5 times!', W/2, H/2+112);
+  ctx.fillText('🐱  Level 2 Boss: press Z to send the cat — stun it first, then kick 5 times!', W/2, H/2+112);
   ctx.fillStyle = '#FF8888'; ctx.font = 'bold 18px Arial';
   ctx.fillText('⚠  Touching enemies costs a life!', W/2, H/2+138);
   const pulse = Math.sin(t/28)*0.35 + 0.65;
@@ -2276,8 +2738,31 @@ function loop() {
   player.update(ball, platforms);
   if (keys['KeyZ'] && cat) cat.launch(player);
 
-  // Player–enemy contact → die
-  if (!player.dead && player.invincible <= 0) {
+  // Slide tackle hits enemies
+  if (player.sliding && !player.dead) {
+    for (const e of enemies) {
+      if (!e.alive) continue;
+      const slideTop = player.y + player.h * 0.52;
+      if (player.x + player.w > e.x + 4 && player.x < e.x + e.w - 4 &&
+          slideTop < e.y + e.h && player.y + player.h > e.y) {
+        const dead = e.hit();
+        player.sliding = false; player.slideTimer = 0;
+        player.vx = player.facing ? -4 : 4;
+        spawnParticles(player.x + player.w/2, player.y + player.h * 0.7, 22,
+          ['#FFD700','#fff','#74AADB','#FF8800']);
+        if (dead) {
+          score += (e.type === 'boss' || e.type === 'stun-boss' || e.type === 'keeper-boss') ? 500 : 100;
+          addText(e.x + e.w/2, e.y - 22, 'SLIDE TACKLE! +100', '#FFD700');
+        } else {
+          addText(e.x + e.w/2, e.y - 22, 'SLIDE! Use cat/ball!', '#FFD700');
+        }
+        break;
+      }
+    }
+  }
+
+  // Player–enemy contact → die (skip when sliding)
+  if (!player.dead && player.invincible <= 0 && !player.sliding) {
     for (const e of enemies) {
       if (!e.alive) continue;
       if (player.x + player.w - 6 > e.x &&
@@ -2346,6 +2831,14 @@ function loop() {
   cam.x += (target - cam.x) * 0.085;
   cam.x  = Math.max(0, cam.x);
 
+  // Rain (Obelisco + Bombonera)
+  if (lvl.bgTheme === 'obelisco' || lvl.rain) updateRain();
+
+  // Slippery ground in rain (Obelisco)
+  if (lvl.bgTheme === 'obelisco' && player.onGround && !player.sliding) {
+    player.vx *= 1.045; // slight momentum carry = feels slippery
+  }
+
   // Draw
   drawBg(cam.x, frameCount, lvl.bgTheme);
   ctx.save();
@@ -2356,6 +2849,7 @@ function loop() {
   drawPlatforms(cam.x, platforms);
   drawCollectibles(cam.x, frameCount);
   if (goal) goal.draw(cam.x, boss && boss.alive);
+  if (lvl.bgTheme === 'obelisco' || lvl.rain) drawRain();
   for (const e of enemies) e.draw(cam.x);
   if (cat) cat.draw(cam.x);
   ball.draw(cam.x);
